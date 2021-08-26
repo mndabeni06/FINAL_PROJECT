@@ -128,7 +128,6 @@ jwt = JWT(app, authenticate, identity)
 
 
 # Defining routes
-@jwt_required
 @app.route('/', methods=["GET"])
 def welcome():
     response = {}
@@ -206,18 +205,18 @@ def player_registration():
                                "home_address,"
                                "contact_number) VALUES(?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, username, email, password, home_address, contact_number))
                 conn.commit()
-                response["message"] = "new player successfully added  to database"
+                response["message"] = "new player successfully registered"
                 response["status_code"] = 201
             return response
         except ValueError:
-            response["message"] = "Failed"
+            response["message"] = "Failed to registered"
             response["status_code"] = 400
             return response
 
 
-# GETTING A PLAYER BY PLAYER_ID
+# GETTING REGISTERED  PLAYER BY PLAYER_ID
 @app.route('/get_player/<int:player_id>', methods=["GET"])
-def get_player(player_id):
+def get_registered_player(player_id):
     response = {}
     with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
         conn.row_factory = dict_factory
@@ -249,7 +248,7 @@ def get_all_profiles():
 
 
 # GETTING A SINGLE PLAYER PROFILE
-@app.route('/each_profile/ <int:player_id>', methods=["GET"])
+@app.route('/each_profile/<int:player_id>/', methods=["GET"])
 def get_each_profile(player_id):
     response = {}
 
@@ -257,7 +256,7 @@ def get_each_profile(player_id):
         with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
             conn.row_factory = dict_factory
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM player_profiles")
+            cursor.execute("SELECT * FROM player_profiles WHERE player_id=" + str(player_id))
             profile = cursor.fetchone()
 
         response['status_code'] = 200

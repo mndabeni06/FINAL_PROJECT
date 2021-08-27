@@ -3,7 +3,7 @@
 import hmac
 import sqlite3
 
-from flask_mail import Mail as Mail
+from flask_mail import Mail as Mail, Message
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS, cross_origin
 from flask_jwt import JWT, jwt_required, current_identity
@@ -212,6 +212,18 @@ def player_registration():
             response["message"] = "Failed to registered"
             response["status_code"] = 400
             return response
+
+
+# ROUTE TO SEND AN EMAIL TO REGISTERED PLAYER
+@app.route('/send_email/<email>', methods=['GET'])
+def send_email(email):
+    mail = Mail(app)
+
+    msg = Message('Hello Message', sender='mndabeni6@gmail.com.com', recipients=[email])
+    msg.body = "This is the email body after making some changes"
+    mail.send(msg)
+
+    return "Thank you for registering at Soccer Talent Hub."
 
 
 # GETTING REGISTERED  PLAYER BY PLAYER_ID

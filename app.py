@@ -1,4 +1,4 @@
-#----------Masimthembe Ndabeni FINAL PROJECT--------#
+# ----------Masimthembe Ndabeni FINAL PROJECT--------#
 
 import hmac
 import sqlite3
@@ -35,7 +35,7 @@ def init_player_reg_table():
     conn = sqlite3.connect('Soccer_Talent_Hub.db')
     print("Database opened successfully")
 
-    conn.execute("CREATE TABLE IF NOT EXISTS player_reg (player_id INTEGER PRIMARY KEY AUTOINCREMENT,"    
+    conn.execute("CREATE TABLE IF NOT EXISTS player_reg (player_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                  "first_name TEXT NOT NULL,"
                  "last_name TEXT NOT NULL,"
                  "username TEXT NOT NULL,"
@@ -62,7 +62,7 @@ def init_player_profile_table():
                      "date_of_birth TEXT NOT NULL,"
                      "place_of_birth TEXT NOT NULL,"
                      "age INT NOT NULL,"
-                     "image TEXT NOT NULL," 
+                     "image TEXT NOT NULL,"
                      "citizenship TEXT NOT NULL,"
                      "position TEXT NOT NULL,"
                      "current_club TEXT NOT NULL)")
@@ -92,7 +92,6 @@ def fetch_player_reg():
 
 
 users = fetch_player_reg()
-
 
 username_table = {u.username: u for u in users}
 userid_table = {u.player_id: u for u in users}
@@ -160,21 +159,21 @@ def player_login():
     response = {}
 
     if request.method == "POST":
-     try:
-        username = request.form["username"]
-        password = request.form["password"]
+        try:
+            username = request.form["username"]
+            password = request.form["password"]
 
-        with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
-            conn.row_factory = dict_factory
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO player_login("
-                           "username,"
-                           "password) VALUES(?, ?)", (username, password))
+            with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
+                conn.row_factory = dict_factory
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO player_login("
+                               "username,"
+                               "password) VALUES(?, ?)", (username, password))
 
-        response['status_code'] = 200
-        response['message'] = "success"
-        return response
-     except ValueError:
+            response['status_code'] = 200
+            response['message'] = "success"
+            return response
+        except ValueError:
             response["message"] = "Please enter correct details"
             response["status_code"] = 400
             return response
@@ -203,7 +202,8 @@ def player_registration():
                                "username,"
                                "password,"
                                "home_address,"
-                               "contact_number) VALUES(?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, username, email, password, home_address, contact_number))
+                               "contact_number) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                               (first_name, last_name, username, email, password, home_address, contact_number))
                 conn.commit()
                 response["message"] = "new player successfully registered"
                 response["status_code"] = 201
@@ -292,9 +292,10 @@ def create_profile():
                                "citizenship,"
                                "place_of_birth,"
                                "position,"
-                               "current_club," 
-                                "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
-                               (player_id, full_name, nickname, date_of_birth, age, citizenship, place_of_birth, position, current_club, image))
+                               "current_club,"
+                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
+                               (player_id, full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
+                                position, current_club, image))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"
                 response["status_code"] = 201
@@ -311,29 +312,124 @@ def update_player_profile(player_id):
     response = {}
 
     if request.method == "PUT":
-        try:
-            player_id = request.form['player_id']
-            full_name = request.form['full_name']
-            nickname = request.form['nickname']
-            date_of_birth = request.form['date_of_birth']
-            age = request.form['age']
-            citizenship = request.form['citizenship']
-            place_of_birth = request.form['place_of_birth']
-            position = request.form['position']
-            image = request.form['image']
-            current_club = request.form['current_club']
+        with sqlite3.connect('Point_of_Sale.db') as conn:
+            incoming_data = dict(request.form)
 
-            with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
-                cursor = conn.cursor()
-                cursor.execute("UPDATE player_profiles SET player_id=? AND full_name=?, AND nickname=?, AND date_of_birth=?, AND age=?, AND citizenship=? AND place_of_birth=? AND image=? AND position=? WHERE current_club=? "
-                               , (player_id, full_name, nickname, date_of_birth, image, age, citizenship,place_of_birth, position, current_club))
-                conn.commit()
-                response["message"] = "Player profile  was successfully updated"
-                response["status_code"] = 201
-            return response
-        except ValueError:
-            response["message"] = "Failed to update player_profile"
-            response["status_code"] = 400
+            put_data = {}
+
+            # UPDATING A FULL_NAME
+            if incoming_data.get("full_name") is not None:
+                put_data["full_name"] = incoming_data.get("full_name")
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profile SET full_name =? WHERE player_id=?",
+                                   (put_data["full_name"], player_id))
+                    conn.commit()
+                    response['message'] = "full_name updated successfully"
+                    response['status_code'] = 200
+
+            # UPDATING NICKNAME
+            if incoming_data.get("nickname") is not None:
+                put_data['nickname'] = incoming_data.get('nickname')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET nickname =? WHERE player_id=?",
+                                   (put_data["nickname"], player_id))
+                    conn.commit()
+
+                    response["content"] = "nickname updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING PLACE OF BIRTH
+            if incoming_data.get("place_of_birth") is not None:
+                put_data['place_of_birth'] = incoming_data.get('place_of_birth')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET place_of_birth =? WHERE player_id=?",
+                                   (put_data["place_of_birth"], player_id))
+                    conn.commit()
+
+                    response["content"] = "Place of birth updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING AGE
+            if incoming_data.get("age") is not None:
+                put_data['age'] = incoming_data.get('age')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET age =? WHERE player_id=?", (put_data["age"], player_id))
+                    conn.commit()
+
+                    response["content"] = "player age updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING A DATE OF BIRTH
+            if incoming_data.get("date_of_birth") is not None:
+                put_data['date_of_birth'] = incoming_data.get('date_of_birth')
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET date_of_birth =? WHERE player_id=?",
+                                   (put_data["date_of_birth"], player_id))
+                    conn.commit()
+
+                    response["content"] = "Date of birth updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING CITIZENSHIP
+            if incoming_data.get("citizenship") is not None:
+                put_data['citizenship'] = incoming_data.get('citizenship')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET citizenship =? WHERE player_id=?",
+                                   (put_data["citizenship"], player_id))
+                    conn.commit()
+
+                    response["content"] = "Player citizenship updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING POSITION
+            if incoming_data.get("position") is not None:
+                put_data['position'] = incoming_data.get('position')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET position =? WHERE player_id=?",
+                                   (put_data["position"], player_id))
+                    conn.commit()
+
+                    response["content"] = "Player position updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING CURRENT POSITION
+            if incoming_data.get("current_club") is not None:
+                put_data['current_club'] = incoming_data.get('current_club')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET current_club =? WHERE player_id=?",  (put_data["current_club"], player_id))
+
+                    conn.commit()
+
+                    response["content"] = "Current Club updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING PLAYER IMAGE
+            if incoming_data.get("image") is not None:
+                put_data['image'] = incoming_data.get('image')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_profiles SET image =? WHERE player_id=?",  (put_data["image"], player_id))
+
+                    conn.commit()
+
+                    response["content"] = "Player image updated successfully"
+                    response["status_code"] = 200
+
             return response
 
 
@@ -357,8 +453,10 @@ def delete_player_profile(player_id):
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
-                cursor.execute("DELETE player_profiles SET player_id=? AND full_name=?, AND nickname=?, AND date_of_birth=?, AND age=?, AND citizenship=? AND place_of_birth=?, AND image=? AND position=? AND current_club=? "
-                               , (player_id, full_name, nickname, date_of_birth, image, age, citizenship,place_of_birth, position, current_club))
+                cursor.execute(
+                    "DELETE player_profiles SET player_id=? AND full_name=?, AND nickname=?, AND date_of_birth=?, AND age=?, AND citizenship=? AND place_of_birth=?, AND image=? AND position=? AND current_club=? "
+                    , (player_id, full_name, nickname, date_of_birth, image, age, citizenship, place_of_birth, position,
+                       current_club))
                 conn.commit()
                 response["message"] = "Player profile  was successfully deleted"
                 response["status_code"] = 201

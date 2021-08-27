@@ -4,10 +4,9 @@ import hmac
 import sqlite3
 
 from flask_mail import Mail as Mail, Message
-from flask import Flask, request, jsonify, redirect
-from flask_cors import CORS, cross_origin
-from flask_jwt import JWT, jwt_required, current_identity
-
+from flask import Flask, request, redirect
+from flask_cors import CORS
+from flask_jwt import JWT, jwt_required
 from smtplib import SMTPRecipientsRefused, SMTPAuthenticationError
 
 
@@ -30,7 +29,7 @@ class User(object):
         self.address = home_address
 
 
-# Creating players_registration table
+# Creating player_registration table
 def init_player_reg_table():
     conn = sqlite3.connect('Soccer_Talent_Hub.db')
     print("Database opened successfully")
@@ -44,7 +43,7 @@ def init_player_reg_table():
     conn.close()
 
 
-# Creating players_login table
+# Creating player_login table
 def init_player_login_table():
     with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
         conn.execute("CREATE TABLE IF NOT EXISTS player_login (player_id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -87,7 +86,7 @@ def fetch_player_reg():
         new_data = []
 
         for data in player_reg:
-            new_data.append(User(data[0], data[3], data[4], data[5], data[6], data[7]))
+            new_data.append(User(data[0], data[1], data[2], data[3], data[4], data[5]))
     return new_data
 
 
@@ -180,6 +179,7 @@ def player_login():
 
 
 # PLAYER REGISTRATION
+@jwt_required()
 @app.route('/player_reg/', methods=["POST"])
 def player_registration():
     response = {}

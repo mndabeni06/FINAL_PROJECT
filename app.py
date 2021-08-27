@@ -534,38 +534,34 @@ def update_player_profile(player_id):
             return response
 
 
+# DELETE REGISTERED PLAYER
+@app.route('/delete-registered-player/<int:player_id>', methods=["PUT"])
+def delete_registered_player(player_id):
+    response = {}
+
+    if request.method == "PUT":
+        with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM player_reg WHERE player_id=" + str(player_id))
+            conn.commit()
+            response['status_code'] = 200
+            response['message'] = "registered player deleted successfully."
+        return response
+
+
 # DELETE PLAYER PROFILE
 @app.route('/delete-profile/<int:player_id>', methods=["PUT"])
 def delete_player_profile(player_id):
     response = {}
 
     if request.method == "PUT":
-        try:
-            player_id = request.form['player_id']
-            full_name = request.form['full_name']
-            nickname = request.form['nickname']
-            date_of_birth = request.form['date_of_birth']
-            age = request.form['age']
-            citizenship = request.form['citizenship']
-            place_of_birth = request.form = ['place_of_birth']
-            position = request.form['position']
-            image = request.form['image']
-            current_club = request.form['current_club']
-
-            with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    "DELETE player_profiles SET player_id=? AND full_name=?, AND nickname=?, AND date_of_birth=?, AND age=?, AND citizenship=? AND place_of_birth=?, AND image=? AND position=? AND current_club=? "
-                    , (player_id, full_name, nickname, date_of_birth, image, age, citizenship, place_of_birth, position,
-                       current_club))
-                conn.commit()
-                response["message"] = "Player profile  was successfully deleted"
-                response["status_code"] = 201
-            return response
-        except ValueError:
-            response["message"] = "Failed to delete player_profile"
-            response["status_code"] = 400
-            return response
+        with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM player_profiles WHERE player_id=" + str(player_id))
+            conn.commit()
+            response['status_code'] = 200
+            response['message'] = "player profile deleted successfully."
+        return response
 
 
 if __name__ == '__main__':

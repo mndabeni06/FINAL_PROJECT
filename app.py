@@ -306,13 +306,114 @@ def create_profile():
             return response
 
 
+# UPDATING REGISTERED PLAYERS
+@app.route('/update_player_registration/<int:player_id>', methods=["PUT"])
+def update_player_registration(player_id):
+    response = {}
+
+    if request.method == "PUT":
+        with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+            incoming_data = dict(request.form)
+
+            put_data = {}
+
+            # UPDATING A FIRST_NAME
+            if incoming_data.get("first_name") is not None:
+                put_data["first_name"] = incoming_data.get("first_name")
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET first_name =? WHERE player_id=?",
+                                   (put_data["first_name"], player_id))
+                    conn.commit()
+                    response['message'] = "first_name updated successfully"
+                    response['status_code'] = 200
+
+            # UPDATING LAST NAME
+            if incoming_data.get("last_name") is not None:
+                put_data['last_name'] = incoming_data.get('last_name')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET last_name =? WHERE player_id=?",
+                                   (put_data["last_name"], player_id))
+                    conn.commit()
+
+                    response["content"] = "last name updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING EMAIL
+            if incoming_data.get("email") is not None:
+                put_data['email'] = incoming_data.get('email')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET email =? WHERE player_id=?",
+                                   (put_data["email"], player_id))
+                    conn.commit()
+
+                    response["content"] = "email updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING USERNAME
+            if incoming_data.get("username") is not None:
+                put_data['username'] = incoming_data.get('username')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET username =? WHERE player_id=?", (put_data["username"], player_id))
+                    conn.commit()
+
+                    response["content"] = "username updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING PASSWORD
+            if incoming_data.get("password") is not None:
+                put_data['password'] = incoming_data.get('password')
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET password =? WHERE player_id=?",
+                                   (put_data["password"], player_id))
+                    conn.commit()
+
+                    response["content"] = "password updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING CONTACT NUMBER
+            if incoming_data.get("contact_number") is not None:
+                put_data['contact_number'] = incoming_data.get('contact_number')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET contact_number =? WHERE player_id=?",
+                                   (put_data["contact_number"], player_id))
+                    conn.commit()
+
+                    response["content"] = "Contact number updated successfully"
+                    response["status_code"] = 200
+
+            # UPDATING HOME ADDRESS
+            if incoming_data.get("home_address") is not None:
+                put_data['home_address'] = incoming_data.get('home_address')
+
+                with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE player_reg SET home_address =? WHERE player_id=?",
+                                   (put_data["home_address"], player_id))
+                    conn.commit()
+
+                    response["content"] = "home_address updated successfully"
+                    response["status_code"] = 200
+
+            return response
+
+
 # UPDATING PLAYER PROFILE
 @app.route('/update_profile/<int:player_id>', methods=["PUT"])
 def update_player_profile(player_id):
     response = {}
 
     if request.method == "PUT":
-        with sqlite3.connect('Point_of_Sale.db') as conn:
+        with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
             incoming_data = dict(request.form)
 
             put_data = {}
@@ -322,7 +423,7 @@ def update_player_profile(player_id):
                 put_data["full_name"] = incoming_data.get("full_name")
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE player_profile SET full_name =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET full_name =? WHERE player_id=?",
                                    (put_data["full_name"], player_id))
                     conn.commit()
                     response['message'] = "full_name updated successfully"

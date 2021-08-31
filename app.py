@@ -183,6 +183,7 @@ def player_login():
 
 # PLAYER REGISTRATION
 @app.route('/player_reg/', methods=["POST"])
+@jwt_required()
 @cross_origin()
 def player_registration():
     response = {}

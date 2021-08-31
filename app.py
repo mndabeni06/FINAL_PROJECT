@@ -322,7 +322,7 @@ def create_profile():
 @app.route('/update_player_registration/<int:player_id>', methods=["PUT"])
 def update_player_registration(player_id):
     response = {}
-
+    
     if request.method == "PUT":
         with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
             incoming_data = dict(request.form)

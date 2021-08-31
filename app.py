@@ -162,8 +162,8 @@ def player_login():
 
     if request.method == "POST":
         try:
-            username = request.form["username"]
-            password = request.form["password"]
+            username = request.json["username"]
+            password = request.json["password"]
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 conn.row_factory = dict_factory

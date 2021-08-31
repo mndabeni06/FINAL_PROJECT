@@ -5,7 +5,7 @@ import sqlite3
 
 from flask_mail import Mail as Mail, Message
 from flask import Flask, request, redirect
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_jwt import JWT, jwt_required
 from smtplib import SMTPRecipientsRefused, SMTPAuthenticationError
 
@@ -138,6 +138,7 @@ def welcome():
 
 # Fetching ALL PLAYER FROM REGISTRATION
 @app.route('/get_all_players/', methods=["GET"])
+@cross_origin()
 def get_all():
     response = {}
 
@@ -155,6 +156,7 @@ def get_all():
 
 # PLAYER LOGIN
 @app.route('/player_login/', methods=["POST"])
+@cross_origin()
 def player_login():
     response = {}
 
@@ -182,6 +184,7 @@ def player_login():
 # PLAYER REGISTRATION
 @jwt_required()
 @app.route('/player_reg/', methods=["POST"])
+@cross_origin()
 def player_registration():
     response = {}
     if request.method == "POST":
@@ -217,6 +220,7 @@ def player_registration():
 
 # ROUTE TO SEND AN EMAIL TO REGISTERED PLAYER
 @app.route('/send_email/<email>', methods=['GET'])
+@cross_origin()
 def send_email(email):
     mail = Mail(app)
 
@@ -229,6 +233,7 @@ def send_email(email):
 
 # GETTING REGISTERED  PLAYER BY PLAYER_ID
 @app.route('/get_player/<int:player_id>', methods=["GET"])
+@cross_origin()
 def get_registered_player(player_id):
     response = {}
     with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
@@ -245,6 +250,7 @@ def get_registered_player(player_id):
 
 # GETTING ALL PLAYER PROFILES
 @app.route('/player_profiles/', methods=["GET"])
+@cross_origin()
 def get_all_profiles():
     response = {}
 
@@ -262,6 +268,7 @@ def get_all_profiles():
 
 # GETTING A SINGLE PLAYER PROFILE
 @app.route('/each_profile/<int:player_id>/', methods=["GET"])
+@cross_origin()
 def get_each_profile(player_id):
     response = {}
 
@@ -321,6 +328,7 @@ def create_profile():
 
 # UPDATING REGISTERED PLAYERS
 @app.route('/update_player_registration/<int:player_id>', methods=["PUT"])
+@cross_origin()
 def update_player_registration(player_id):
     response = {}
     
@@ -422,6 +430,7 @@ def update_player_registration(player_id):
 
 # UPDATING PLAYER PROFILE
 @app.route('/update_profile/<int:player_id>', methods=["PUT"])
+@cross_origin()
 def update_player_profile(player_id):
     response = {}
 
@@ -549,6 +558,7 @@ def update_player_profile(player_id):
 
 # DELETE REGISTERED PLAYER
 @app.route('/delete-registered-player/<int:player_id>', methods=["PUT"])
+@cross_origin()
 def delete_registered_player(player_id):
     response = {}
 
@@ -564,6 +574,7 @@ def delete_registered_player(player_id):
 
 # DELETE PLAYER PROFILE
 @app.route('/delete-profile/<int:player_id>', methods=["PUT"])
+@cross_origin()
 def delete_player_profile(player_id):
     response = {}
 

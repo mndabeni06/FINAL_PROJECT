@@ -188,13 +188,13 @@ def player_registration():
     response = {}
     if request.method == "POST":
         try:
-            first_name = request.form['first_name']
-            last_name = request.form['last_name']
-            email = request.form['email']
-            username = request.form['username']
-            password = request.form['password']
-            home_address = request.form['home_address']
-            contact_number = request.form['contact_number']
+            first_name = request.json['first_name']
+            last_name = request.json['last_name']
+            email = request.json['email']
+            username = request.json['username']
+            password = request.json['password']
+            home_address = request.json['home_address']
+            contact_number = request.json['contact_number']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
@@ -290,16 +290,16 @@ def create_profile():
     response = {}
     if request.method == "POST":
         try:
-            player_id = request.form['player_id']
-            full_name = request.form['full_name']
-            nickname = request.form['nickname']
-            date_of_birth = request.form['date_of_birth']
-            age = request.form['age']
-            citizenship = request.form['citizenship']
-            position = request.form['position']
-            place_of_birth = request.form['place_of_birth']
-            current_club = request.form['current_club']
-            image = request.form['image']
+            player_id = request.json['player_id']
+            full_name = request.json['full_name']
+            nickname = request.json['nickname']
+            date_of_birth = request.json['date_of_birth']
+            age = request.json['age']
+            citizenship = request.json['citizenship']
+            position = request.json['position']
+            place_of_birth = request.json['place_of_birth']
+            current_club = request.json['current_club']
+            image = request.json['image']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()

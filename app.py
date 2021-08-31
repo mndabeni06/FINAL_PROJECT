@@ -112,7 +112,6 @@ app = Flask(__name__)
 CORS(app)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
-app.config['CORS_HEADERS'] = ['Content-type']
 
 # Defining Email Verification
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'

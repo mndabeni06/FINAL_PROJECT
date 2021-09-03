@@ -109,7 +109,7 @@ def identity(payload):
 
 
 app = Flask(__name__)
-#CORS(app)
+CORS(app)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 
@@ -127,6 +127,7 @@ jwt = JWT(app, authenticate, identity)
 
 # Defining routes
 @app.route('/', methods=["GET"])
+@cross_origin()
 def welcome():
     response = {}
     if request.method == "GET":
@@ -137,6 +138,7 @@ def welcome():
 
 # Fetching ALL PLAYER FROM REGISTRATION
 @app.route('/get_all_players/', methods=["GET"])
+@cross_origin()
 def get_all():
     response = {}
 
@@ -283,7 +285,7 @@ def get_each_profile(player_id):
 
 # CREATING A NEW PLAYER PROFILE
 @app.route('/create_profile/', methods=["POST"])
-#@cross_origin()
+@cross_origin()
 def create_profile():
     response = {}
     if request.method == "POST":

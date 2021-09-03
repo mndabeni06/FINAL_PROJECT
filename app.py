@@ -283,7 +283,7 @@ def get_each_profile(player_id):
 
 # CREATING A NEW PLAYER PROFILE
 @app.route('/create_profile/', methods=["POST"])
-@cross_origin()
+#@cross_origin()
 def create_profile():
     response = {}
     if request.method == "POST":

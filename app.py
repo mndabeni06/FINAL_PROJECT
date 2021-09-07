@@ -303,7 +303,6 @@ def create_profile():
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
                 cursor.execute("INSERT INTO player_profiles ("
-                               "player_id, "
                                "full_name, "
                                "nickname, "
                                " date_of_birth,"
@@ -313,7 +312,7 @@ def create_profile():
                                "position,"
                                "current_club,"
                                "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
-                               (player_id, full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
+                               ( full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
                                 position, current_club, image))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"

@@ -311,7 +311,7 @@ def create_profile():
                                "place_of_birth,"
                                "position,"
                                "current_club,"
-                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
+                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?)",
                                ( full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
                                 position, current_club, image))
                 conn.commit()

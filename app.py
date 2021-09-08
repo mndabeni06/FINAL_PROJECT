@@ -2,12 +2,16 @@
 
 import hmac
 import sqlite3
+import cloudinary
+
 
 from flask_mail import Mail as Mail, Message
 from flask import Flask, request, redirect
 from flask_cors import CORS, cross_origin
 from flask_jwt import JWT, jwt_required
 from smtplib import SMTPRecipientsRefused, SMTPAuthenticationError
+import cloudinary
+import cloudinary.uploader
 
 
 # Function to  create dictionaries in SQL rows, and data follows JSON format
@@ -66,6 +70,20 @@ def init_player_profile_table():
                      "position TEXT NOT NULL,"
                      "current_club TEXT NOT NULL)")
     print("player_profile table created successfully")
+
+
+def image_upload():
+    app.logger.info('in upload route')
+    cloudinary.config(cloud_name="life-choices", api_key="567289268154448",
+                      api_secret="kBQ-7vVF1p3S6yHq84hTAiH5AyE")
+    upload_result = None
+    if request.method == 'POST' or request.method == 'PUT':
+        profile_image = request.json['image']
+        app.logger.info('%s file_to_upload', profile_image)
+        if profile_image:
+            upload_result = cloudinary.uploader.upload(profile_image)
+            app.logger.info(upload_result)
+            return upload_result['url']
 
 
 # Defining Tables
@@ -290,15 +308,14 @@ def create_profile():
     response = {}
     if request.method == "POST":
         try:
-            full_name = request.form['full_name']
-            nickname = request.form['nickname']
-            date_of_birth = request.form['date_of_birth']
-            age = request.form['age']
-            citizenship = request.form['citizenship']
-            position = request.form['position']
-            place_of_birth = request.form['place_of_birth']
-            current_club = request.form['current_club']
-            image = request.form['image']
+            full_name = request.json['full_name']
+            nickname = request.json['nickname']
+            date_of_birth = request.json['date_of_birth']
+            age = request.json['age']
+            citizenship = request.json['citizenship']
+            position = request.json['position']
+            place_of_birth = request.json['place_of_birth']
+            current_club = request.json['current_club']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
@@ -312,8 +329,8 @@ def create_profile():
                                "position,"
                                "current_club,"
                                "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?)",
-                               ( full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
-                                position, current_club, image))
+                               (full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
+                                position, current_club, image_upload()))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"
                 response["status_code"] = 201

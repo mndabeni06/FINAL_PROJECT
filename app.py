@@ -209,8 +209,8 @@ def player_registration():
             first_name = request.json['first_name']
             last_name = request.json['last_name']
             email = request.json['email']
-            username = request.form['username']
-            password = request.form['password']
+            username = request.json['username']
+            password = request.json['password']
             home_address = request.json['home_address']
             contact_number = request.json['contact_number']
 

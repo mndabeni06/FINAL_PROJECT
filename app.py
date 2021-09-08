@@ -206,13 +206,13 @@ def player_registration():
     response = {}
     if request.method == "POST":
         try:
-            first_name = request.form['first_name']
-            last_name = request.form['last_name']
-            email = request.form['email']
+            first_name = request.json['first_name']
+            last_name = request.json['last_name']
+            email = request.json['email']
             username = request.form['username']
             password = request.form['password']
-            home_address = request.form['home_address']
-            contact_number = request.form['contact_number']
+            home_address = request.json['home_address']
+            contact_number = request.json['contact_number']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()

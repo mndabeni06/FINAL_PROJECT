@@ -180,8 +180,8 @@ def player_login():
 
     if request.method == "POST":
         try:
-            username = request.form["username"]
-            password = request.form["password"]
+            username = request.json["username"]
+            password = request.json["password"]
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 conn.row_factory = dict_factory
@@ -299,6 +299,22 @@ def get_each_profile(player_id):
         response['status_code'] = 200
         response['data'] = profile
         return response
+
+# get user by password
+@app.route('/player-info/<username>', methods=["GET"])
+@cross_origin()
+# @jwt_required()
+def get_player_password(username):
+    response = {}
+    with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
+        conn.row_factory = dict_factory
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM player_reg WHERE password=?", [username])
+        user = cursor.fetchone()
+
+    response['status_code'] = 200
+    response['data'] = user  # tuple(accumulator)
+    return response
 
 
 # CREATING A NEW PLAYER PROFILE

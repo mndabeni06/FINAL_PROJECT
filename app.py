@@ -275,7 +275,7 @@ def get_all_profiles():
         with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
             conn.row_factory = dict_factory
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM players_profiles")
+            cursor.execute("SELECT * FROM player_profiles")
             profiles = cursor.fetchall()
 
         response['status_code'] = 200
@@ -293,7 +293,7 @@ def get_each_profile(player_id):
         with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
             conn.row_factory = dict_factory
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM players_profiles WHERE player_id=" + str(player_id))
+            cursor.execute("SELECT * FROM player_profiles WHERE player_id=" + str(player_id))
             profile = cursor.fetchone()
 
         response['status_code'] = 200
@@ -336,7 +336,7 @@ def create_profile():
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
-                cursor.execute("INSERT INTO players_profiles ("
+                cursor.execute("INSERT INTO player_profiles ("
                                "full_name, "
                                "nickname, "
                                " date_of_birth,"
@@ -345,7 +345,7 @@ def create_profile():
                                "place_of_birth,"
                                "position,"
                                "current_club,"
-                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
+                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?)",
                                (full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
                                 position, current_club, image_upload()))
                 conn.commit()
@@ -477,7 +477,7 @@ def update_player_profile(player_id):
                 put_data["full_name"] = incoming_data.get("full_name")
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET full_name =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET full_name =? WHERE player_id=?",
                                    (put_data["full_name"], player_id))
                     conn.commit()
                     response['message'] = "full_name updated successfully"
@@ -489,7 +489,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET nickname =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET nickname =? WHERE player_id=?",
                                    (put_data["nickname"], player_id))
                     conn.commit()
 
@@ -502,7 +502,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET place_of_birth =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET place_of_birth =? WHERE player_id=?",
                                    (put_data["place_of_birth"], player_id))
                     conn.commit()
 
@@ -515,7 +515,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET age =? WHERE player_id=?", (put_data["age"], player_id))
+                    cursor.execute("UPDATE player_profiles SET age =? WHERE player_id=?", (put_data["age"], player_id))
                     conn.commit()
 
                     response["content"] = "player age updated successfully"
@@ -526,7 +526,7 @@ def update_player_profile(player_id):
                 put_data['date_of_birth'] = incoming_data.get('date_of_birth')
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET date_of_birth =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET date_of_birth =? WHERE player_id=?",
                                    (put_data["date_of_birth"], player_id))
                     conn.commit()
 
@@ -539,7 +539,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET citizenship =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET citizenship =? WHERE player_id=?",
                                    (put_data["citizenship"], player_id))
                     conn.commit()
 
@@ -552,7 +552,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET position =? WHERE player_id=?",
+                    cursor.execute("UPDATE player_profiles SET position =? WHERE player_id=?",
                                    (put_data["position"], player_id))
                     conn.commit()
 
@@ -565,7 +565,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET current_club =? WHERE player_id=?",  (put_data["current_club"], player_id))
+                    cursor.execute("UPDATE player_profiles SET current_club =? WHERE player_id=?",  (put_data["current_club"], player_id))
 
                     conn.commit()
 
@@ -578,7 +578,7 @@ def update_player_profile(player_id):
 
                 with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
                     cursor = conn.cursor()
-                    cursor.execute("UPDATE players_profiles SET image =? WHERE player_id=?",  (put_data["image"], player_id))
+                    cursor.execute("UPDATE player_profiles SET image =? WHERE player_id=?",  (put_data["image"], player_id))
 
                     conn.commit()
 
@@ -613,7 +613,7 @@ def delete_player_profile(player_id):
     if request.method == "PUT":
         with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM players_profiles WHERE player_id=" + str(player_id))
+            cursor.execute("DELETE FROM player_profiles WHERE player_id=" + str(player_id))
             conn.commit()
             response['status_code'] = 200
             response['message'] = "player profile deleted successfully."

@@ -68,7 +68,7 @@ def init_player_profile_table():
                      "image TEXT NOT NULL,"
                      "citizenship TEXT NOT NULL,"
                      "position TEXT NOT NULL,"
-                     "added_players TEXT NOT NULL,"
+                     "value TEXT NOT NULL,"
                      "current_club TEXT NOT NULL)")
     print("player_profile table created successfully")
 

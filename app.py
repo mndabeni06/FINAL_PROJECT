@@ -57,7 +57,7 @@ def init_player_login_table():
 
 
 # Creating player_profile table
-def init_players_profile_table():
+def init_player_profile_table():
     with sqlite3.connect('Soccer_Talent_Hub.db') as conn:
         conn.execute("CREATE TABLE IF NOT EXISTS players_profiles (player_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                      "full_name TEXT NOT NULL,"
@@ -90,7 +90,7 @@ def image_upload():
 
 init_player_reg_table()
 init_player_login_table()
-init_players_profile_table()
+init_player_profile_table()
 
 
 # Function to fetch everything from registration table

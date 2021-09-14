@@ -332,7 +332,6 @@ def create_profile():
             position = request.form['position']
             place_of_birth = request.form['place_of_birth']
             current_club = request.form['current_club']
-            value = request.form['value']
 
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:

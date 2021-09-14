@@ -350,7 +350,7 @@ def create_profile():
                                "value,"
                                "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
                                (full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
-                                position, value, current_club, image_upload()))
+                                position, current_club, value, image_upload()))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"
                 response["status_code"] = 201

@@ -68,6 +68,7 @@ def init_player_profile_table():
                      "image TEXT NOT NULL,"
                      "citizenship TEXT NOT NULL,"
                      "position TEXT NOT NULL,"
+                     "added_players TEXT NOT NULL,"
                      "current_club TEXT NOT NULL)")
     print("player_profile table created successfully")
 
@@ -300,10 +301,10 @@ def get_each_profile(player_id):
         response['data'] = profile
         return response
 
+
 # get user by password
 @app.route('/player-info/<username>', methods=["GET"])
 @cross_origin()
-# @jwt_required()
 def get_player_password(username):
     response = {}
     with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
@@ -331,6 +332,7 @@ def create_profile():
             citizenship = request.json['citizenship']
             position = request.json['position']
             place_of_birth = request.json['place_of_birth']
+            added_players = request.json['added_players']
             current_club = request.json['current_club']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
@@ -344,9 +346,10 @@ def create_profile():
                                "place_of_birth,"
                                "position,"
                                "current_club,"
-                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?)",
+                               "added_players,"
+                               "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
                                (full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
-                                position, current_club, image_upload()))
+                                position, added_players, current_club, image_upload()))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"
                 response["status_code"] = 201

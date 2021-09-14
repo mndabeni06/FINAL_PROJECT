@@ -68,7 +68,6 @@ def init_players_profile_table():
                      "image TEXT NOT NULL,"
                      "citizenship TEXT NOT NULL,"
                      "position TEXT NOT NULL,"
-                     "value TEXT NOT NULL,"
                      "current_club TEXT NOT NULL)")
     print("player_profile table created successfully")
 
@@ -347,10 +346,9 @@ def create_profile():
                                "place_of_birth,"
                                "position,"
                                "current_club,"
-                               "value,"
                                "image)  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)",
                                (full_name, nickname, date_of_birth, age, citizenship, place_of_birth,
-                                position, current_club, value, image_upload()))
+                                position, current_club, image_upload()))
                 conn.commit()
                 response["message"] = "New player has been successfully added to database"
                 response["status_code"] = 201

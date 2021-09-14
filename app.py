@@ -324,15 +324,14 @@ def create_profile():
     response = {}
     if request.method == "POST":
         try:
-            full_name = request.form['full_name']
-            nickname = request.form['nickname']
-            date_of_birth = request.form['date_of_birth']
-            age = request.form['age']
-            citizenship = request.form['citizenship']
-            position = request.form['position']
-            place_of_birth = request.form['place_of_birth']
-            current_club = request.form['current_club']
-
+            full_name = request.json['full_name']
+            nickname = request.json['nickname']
+            date_of_birth = request.json['date_of_birth']
+            age = request.json['age']
+            citizenship = request.json['citizenship']
+            position = request.json['position']
+            place_of_birth = request.json['place_of_birth']
+            current_club = request.json['current_club']
 
             with sqlite3.connect("Soccer_Talent_Hub.db") as conn:
                 cursor = conn.cursor()
